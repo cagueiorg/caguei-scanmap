@@ -1,0 +1,8 @@
+# Copie para scope.yaml e mantenha somente ativos que você está autorizado a auditar.
+authorization: "Ticket SEC-2026-001"
+allowed_networks:
+  - "127.0.0.0/8"
+  - "192.168.56.0/24"
+allowed_hosts:
+  - "scanme.internal.example"
+
