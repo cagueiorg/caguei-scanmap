@@ -1,55 +1,74 @@
 # Caguei ScanMap
 
-> **Não confie. Mapeie.**  
-> Network Scanner & Asset Mapper defensivo, por [caguei.org](https://caguei.org).
+```text
+   ██████╗ █████╗  ██████╗ ██╗   ██╗███████╗██╗
+  ██╔════╝██╔══██╗██╔════╝ ██║   ██║██╔════╝██║
+  ██║     ███████║██║  ███╗██║   ██║█████╗  ██║
+  ██║     ██╔══██║██║   ██║██║   ██║██╔══╝  ██║
+  ╚██████╗██║  ██║╚██████╔╝╚██████╔╝███████╗██║
+   ╚═════╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚══════╝╚═╝
 
-Caguei ScanMap é uma ferramenta de linha de comando para inventário e auditoria autorizada de
-rede. Ela oferece scan TCP connect assíncrono, seleção de portas e intervalos, identificação
-básica por portas conhecidas, apresentação no terminal e exportação JSON.
+        ███████╗ ██████╗ █████╗ ███╗   ██╗███╗   ███╗ █████╗ ██████╗
+        ██╔════╝██╔════╝██╔══██╗████╗  ██║████╗ ████║██╔══██╗██╔══██╗
+        ███████╗██║     ███████║██╔██╗ ██║██╔████╔██║███████║██████╔╝
+        ╚════██║██║     ██╔══██║██║╚██╗██║██║╚██╔╝██║██╔══██║██╔═══╝
+        ███████║╚██████╗██║  ██║██║ ╚████║██║ ╚═╝ ██║██║  ██║██║
+        ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝
 
-O **Scope Guard é obrigatório**: nenhum pacote de scan é iniciado antes de o alvo ser validado
-contra um arquivo local de autorização.
+                    Não confie. Mapeie.
+                       by caguei.org
+```
 
-## Limites éticos
+> **Não confie. Mapeie. — Don't trust. Map it.**  
+> A defensive Network Scanner & Asset Mapper by [caguei.org](https://caguei.org).
 
-Use somente em ativos próprios ou com autorização expressa. O projeto deliberadamente não
-inclui evasão, stealth, exploração, bypass, força bruta, scans de vulnerabilidade ou técnicas
-ofensivas avançadas. A identificação de serviços é apenas uma associação conservadora entre
-porta conhecida e nome comum; não realiza captura agressiva de banners.
+Caguei ScanMap is a command-line tool for authorized network inventory and auditing. It
+provides asynchronous TCP connect scanning, individual port and range selection, basic
+well-known service identification, rich terminal output, and JSON exports.
 
-## Requisitos e instalação
+The **Scope Guard is mandatory**: no scan connection is attempted until the target has been
+validated against a local authorization file.
 
-- Python 3.12 ou superior
+## Ethical boundaries
+
+Use this tool only on assets you own or have explicit permission to audit. The project
+deliberately excludes evasion, stealth, exploitation, bypass, brute force, vulnerability
+scanning, and advanced offensive techniques. Service identification is a conservative mapping
+of well-known ports to common service names; it does not perform aggressive banner grabbing.
+
+## Requirements and installation
+
+- Python 3.12 or newer
 - Linux, macOS ou Windows
 
 ```bash
-git clone https://github.com/SEU-USUARIO/caguei-scanmap.git
+git clone https://github.com/cagueiorg/caguei-scanmap.git
 cd caguei-scanmap
 python -m venv .venv
 ```
 
-Ative o ambiente virtual e instale:
+Activate the virtual environment and install the project:
 
 ```bash
 python -m pip install -e .
 caguei-scanmap --help
 ```
 
-Para desenvolvimento:
+For development:
 
 ```bash
 python -m pip install -e ".[dev]"
 ```
 
-## Configure o Scope Guard
+## Configure the Scope Guard
 
-Copie o exemplo sem versionar sua autorização real:
+Copy the example without committing your real authorization file:
 
 ```bash
 cp scope.example.yaml scope.yaml
 ```
 
-Edite `scope.yaml`:
+Edit `scope.yaml`:
 
 ```yaml
 authorization: "Ticket SEC-2026-001"
@@ -59,25 +78,25 @@ allowed_hosts:
   - "scanme.internal.example"
 ```
 
-`authorization` deve identificar a aprovação, ordem de serviço ou ticket. `allowed_networks`
-aceita IPv4/IPv6 em CIDR. `allowed_hosts` aceita nomes DNS exatos. Para nomes autorizados por
-rede, todos os endereços resolvidos precisam pertencer a uma rede permitida.
+`authorization` should identify the approval, work order, or ticket. `allowed_networks` accepts
+IPv4 and IPv6 CIDR ranges. `allowed_hosts` accepts exact DNS names. When a hostname is
+authorized through a network, every resolved address must belong to an allowed network.
 
-## Uso
+## Usage
 
-Scan das portas padrão (`22,80,443`):
+Scan the default ports (`22,80,443`):
 
 ```bash
 caguei-scanmap scan 192.168.56.10 --scope scope.yaml
 ```
 
-Portas, listas e intervalos:
+Select individual ports, lists, and ranges:
 
 ```bash
 caguei-scanmap scan 192.168.56.10 --ports 22,80,443,8000-8010 --scope scope.yaml
 ```
 
-Exportação JSON e ajustes operacionais:
+Export JSON and adjust operational limits:
 
 ```bash
 caguei-scanmap scan 192.168.56.10 \
@@ -88,11 +107,12 @@ caguei-scanmap scan 192.168.56.10 \
   --output scan-results.json
 ```
 
-A concorrência é limitada a 500. Comece baixo em equipamentos frágeis ou redes críticas.
-Portas fechadas ou sem resposta não aparecem na tabela; o JSON registra alvo, endereços,
-portas abertas, serviços estimados, horários e referência da autorização.
+Concurrency is capped at 500. Start with a low value when auditing fragile devices or critical
+networks. Closed or unresponsive ports are omitted from the table. The JSON report records the
+target, resolved addresses, open ports, estimated services, timestamps, and authorization
+reference.
 
-## Desenvolvimento e qualidade
+## Development and quality
 
 ```bash
 ruff check .
@@ -100,21 +120,22 @@ ruff format --check .
 pytest
 ```
 
-O workflow em `.github/workflows/ci.yml` executa lint, formatação e testes em Python 3.12 e
-3.13 para pushes e pull requests.
+The workflow at `.github/workflows/ci.yml` runs linting, formatting checks, and tests on Python
+3.12 and 3.13 for every push and pull request.
 
-## Estrutura
+## Project structure
 
 ```text
-src/caguei_scanmap/  CLI, Scope Guard, scanner, modelos e serviços
-tests/                testes unitários sem varredura externa
-.github/workflows/   integração contínua
-scope.example.yaml   modelo seguro de autorização
+src/caguei_scanmap/  CLI, Scope Guard, scanner, models, and services
+tests/                unit tests with no external network scanning
+.github/workflows/   continuous integration
+scope.example.yaml   safe authorization template
 ```
 
-## Contribuição e segurança
+## Contributing and security
 
-Antes de contribuir, preserve o Scope Guard e os limites defensivos. Consulte [SECURITY.md](SECURITY.md)
-para uso responsável e relato privado de vulnerabilidades.
+Contributions must preserve the Scope Guard and the project's defensive boundaries. Read
+[SECURITY.md](SECURITY.md) for responsible-use requirements and private vulnerability
+reporting instructions.
 
-Licença MIT. Consulte [LICENSE](LICENSE).
+Released under the MIT License. See [LICENSE](LICENSE).
